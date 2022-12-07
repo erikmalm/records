@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeRepositoryTest {
-    /**
 
 
      EmployeeRepository repository = new EmployeeRepository();
@@ -51,9 +50,5 @@ public class EmployeeRepositoryTest {
         assertEquals("Email already exists in memory", exception.getMessage());
 
     }
-
-
-     */
-
 
 }

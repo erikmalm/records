@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeTest {
 
-    /**
+
 
     @Test
     void createNewEmployee() {
@@ -18,7 +18,7 @@ public class EmployeeTest {
         assertNotNull(employee);
         assertEquals("John",employee.firstName(), "Something went wrong. Name was: " + employee.firstName());
     }
-    */
+
 
 
 }
