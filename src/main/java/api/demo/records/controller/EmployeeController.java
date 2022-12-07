@@ -5,6 +5,7 @@ import api.demo.records.repository.EmployeeRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+//@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 public class EmployeeController {
 
     private final EmployeeRepository repository;
