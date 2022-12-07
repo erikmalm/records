@@ -15,8 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-//@CrossOrigin("http://localhost:3000")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:3000")
 public class EmployeeController {
 
     private final EmployeeRepository repository;
