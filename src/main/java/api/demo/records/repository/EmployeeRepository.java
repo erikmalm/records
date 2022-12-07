@@ -15,17 +15,30 @@ public class EmployeeRepository {
         return streams;
     }
 
+    /**
+     * Searches for an employee based on their e-mail address. Returns null if
+     * no employee found with that e-mail address.
+     * @param email The e-mail address to search for
+     * @return The employee with that e-mail
+     */
+
     public Employee findByEmail(String email) {
         return streams.stream().filter(employee -> employee.email().equals(email)).findFirst().orElse(null);
     }
 
 
+    /**
+     * Creates a new employee, based on incoming stream with
+     *  employee details
+     * @param stream The details of the new employee
+     * @return The details of the added employee
+     */
 
     public Employee create(Employee stream) {
 
-        if (anyValueIsNull(stream)) {
+        if (anyEmployeeValueIsNull(stream)) {
             throw new IllegalArgumentException("Field values can not be null");
-        } else if (anyValueIsEmpty(stream)) {
+        } else if (anyEmployeeValueIsEmpty(stream)) {
             throw new IllegalArgumentException("Field values can not be empty");
         }
 
@@ -42,8 +55,8 @@ public class EmployeeRepository {
      * - New employee details are not valid
      * - Email to search for is empty or null
      * - Trying to change e-mail to an existing users e-mail address
-     * @param stream the new details
-     * @param email the email of the current user
+     * @param stream The new (updated) details
+     * @param email The email of the user to update
      */
 
     public void update(Employee stream, String email) {
@@ -52,9 +65,9 @@ public class EmployeeRepository {
             throw new RuntimeException("Email can't be null");
         } else if (email.equals("")) {
             throw new IllegalArgumentException("Email can't be empty");
-        } else if (anyValueIsNull(stream)) {
+        } else if (anyEmployeeValueIsNull(stream)) {
             throw new IllegalArgumentException("Field values can not be null");
-        } else if (anyValueIsEmpty(stream)) {
+        } else if (anyEmployeeValueIsEmpty(stream)) {
             throw new IllegalArgumentException("Field values can not be empty");
         }
 
@@ -73,7 +86,7 @@ public class EmployeeRepository {
 
     /**
      * Call to delete the requested employee by e-mail
-     * @param email the email of the user to delete
+     * @param email The email of the user to delete
      */
 
     public void delete(String email) {
@@ -82,10 +95,10 @@ public class EmployeeRepository {
 
     /**
      * Helper method for repository. Checks if any employee detail is null
-     * @param details the current stream details
-     * @return true if any employee detail is null, else false
+     * @param details The current employee details
+     * @return True if any employee detail is null, otherwise false
      */
-    private boolean anyValueIsNull(Employee details) {
+    private boolean anyEmployeeValueIsNull(Employee details) {
         return details.firstName() == null
                 || details.lastName() == null
                 || details.email() == null;
@@ -93,10 +106,10 @@ public class EmployeeRepository {
 
     /**
      * Helper method for repository. Checks if any employee detail is empty
-     * @param details the current stream details
-     * @returntrue if any employee detail is empty, else false
+     * @param details The current Employee details
+     * @return True if any employee detail is empty, otherwise false
      */
-    private boolean anyValueIsEmpty(Employee details) {
+    private boolean anyEmployeeValueIsEmpty(Employee details) {
         return Objects.equals(details.firstName(), "")
                 || Objects.equals(details.lastName(), "")
                 || Objects.equals(details.email(), "");
