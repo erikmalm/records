@@ -35,7 +35,6 @@ public class EmployeeController {
      * @return all employees in memory
      */
 
-    // http://localhost:8080/api/
     @GetMapping
     public List<Employee> findAll() {
         return repository.findAll();
@@ -61,8 +60,6 @@ public class EmployeeController {
      * @return the updated repository.
      */
 
-    // POST http://localhost:8080/api/
-    // Return 200 status code
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Employee create(@Valid @RequestBody Employee stream) {
