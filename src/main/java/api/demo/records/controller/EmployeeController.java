@@ -64,8 +64,8 @@ public class EmployeeController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Employee create(@Valid @RequestBody Employee stream) {
-        return repository.create(stream);
+    public Employee create(@RequestBody Employee stream) {
+            return repository.create(stream);
     }
 
     /**

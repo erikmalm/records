@@ -1,5 +1,8 @@
 package api.demo.records.repository;
 
+import api.demo.records.exception.RecordsException;
+import api.demo.records.exception.RecordsFieldValueIsNullException;
+import api.demo.records.exception.RecordsFieldValueMissingException;
 import api.demo.records.model.Employee;
 import org.springframework.stereotype.Repository;
 
@@ -34,12 +37,13 @@ public class EmployeeRepository {
      * @return The details of the added employee
      */
 
-    public Employee create(Employee stream) {
+    public Employee create(Employee stream)
+            throws RecordsFieldValueIsNullException, RecordsFieldValueMissingException {
 
         if (anyEmployeeValueIsNull(stream)) {
-            throw new IllegalArgumentException("Field values can not be null");
+            throw new RecordsFieldValueIsNullException("Field values can not be null");
         } else if (anyEmployeeValueIsEmpty(stream)) {
-            throw new IllegalArgumentException("Field values can not be empty");
+            throw new RecordsFieldValueMissingException("Field values can not be empty");
         }
 
         if (findByEmail(stream.email()) != null) {
