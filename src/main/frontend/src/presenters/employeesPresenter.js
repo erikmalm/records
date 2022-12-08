@@ -37,8 +37,6 @@ export default function EmployeesPresenter() {
           });
         }
 
-
-
         const deleteEmployee = (email) => {
           axios.delete(`http://localhost:8080/api/${email}`)
           .then(res => {
@@ -56,7 +54,7 @@ export default function EmployeesPresenter() {
                 'Content-Type': 'application/json'
             },
            responseType: 'text'
-        };     
+        };
 
           axios.post(`http://localhost:8080/api`,
           {
