@@ -2,7 +2,7 @@ package api.demo.records.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class RecordsException extends Throwable {
+public class RecordsException {
 
     private final String message;
 

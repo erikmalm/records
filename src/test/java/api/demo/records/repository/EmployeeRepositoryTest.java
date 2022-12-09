@@ -1,5 +1,8 @@
 package api.demo.records.repository;
 
+import api.demo.records.exception.RecordsEmailAlreadyExistsException;
+import api.demo.records.exception.RecordsFieldValueIsNullException;
+import api.demo.records.exception.RecordsFieldValueMissingException;
 import api.demo.records.model.Employee;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,7 @@ public class EmployeeRepositoryTest {
     @Test
     void testEmailIsEmpty() {
         Throwable exception = assertThrows(
-                IllegalArgumentException.class, () -> {
+                RecordsFieldValueMissingException.class, () -> {
                     repository.create(new Employee(john, doe, empty));
                 });
         assertEquals("Field values can not be empty", exception.getMessage());
@@ -32,7 +35,7 @@ public class EmployeeRepositoryTest {
     @Test
     void testEmailIsNull() {
         Throwable exception = assertThrows(
-                IllegalArgumentException.class, () -> {
+                RecordsFieldValueIsNullException.class, () -> {
                     repository.create(new Employee(john, doe, nullString));
                 });
         assertEquals("Field values can not be null", exception.getMessage());
@@ -44,7 +47,7 @@ public class EmployeeRepositoryTest {
         repository.create(new Employee(john, doe, johnDoeEmail));
 
         Throwable exception = assertThrows(
-                RuntimeException.class, () -> {
+                RecordsEmailAlreadyExistsException.class, () -> {
                     repository.create(new Employee(jane, doe, johnDoeEmail));
                 });
         assertEquals("Email already exists in memory", exception.getMessage());

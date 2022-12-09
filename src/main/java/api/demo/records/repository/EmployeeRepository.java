@@ -1,8 +1,6 @@
 package api.demo.records.repository;
 
-import api.demo.records.exception.RecordsException;
-import api.demo.records.exception.RecordsFieldValueIsNullException;
-import api.demo.records.exception.RecordsFieldValueMissingException;
+import api.demo.records.exception.*;
 import api.demo.records.model.Employee;
 import org.springframework.stereotype.Repository;
 
@@ -38,7 +36,7 @@ public class EmployeeRepository {
      */
 
     public Employee create(Employee stream)
-            throws RecordsFieldValueIsNullException, RecordsFieldValueMissingException {
+            throws RuntimeException {
 
         if (anyEmployeeValueIsNull(stream)) {
             throw new RecordsFieldValueIsNullException("Field values can not be null");
@@ -47,7 +45,7 @@ public class EmployeeRepository {
         }
 
         if (findByEmail(stream.email()) != null) {
-            throw new RuntimeException("Email already exists in memory");
+            throw new RecordsEmailAlreadyExistsException("Email already exists in memory");
         }
 
         streams.add(stream);
@@ -66,24 +64,24 @@ public class EmployeeRepository {
     public void update(Employee stream, String email) {
 
         if (email == null) {
-            throw new RuntimeException("Email can't be null");
+            throw new RecordsFieldValueIsNullException("Email can't be null");
         } else if (email.equals("")) {
-            throw new IllegalArgumentException("Email can't be empty");
+            throw new RecordsFieldValueMissingException("Email can't be empty");
         } else if (anyEmployeeValueIsNull(stream)) {
-            throw new IllegalArgumentException("Field values can not be null");
+            throw new RecordsFieldValueIsNullException("Field values can not be null");
         } else if (anyEmployeeValueIsEmpty(stream)) {
-            throw new IllegalArgumentException("Field values can not be empty");
+            throw new RecordsFieldValueMissingException("Field values can not be empty");
         }
 
         if (!Objects.equals(stream.email(), email)) {
             if (findByEmail(stream.email()) != null) {
-                throw new RuntimeException("Trying to update to existing e-mail address");
+                throw new RecordsEmailAlreadyExistsException("Trying to update to existing e-mail address");
             }
         }
 
         Employee existing = streams.stream().filter(s -> s.email().equals(email))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Stream not found"));
+                .orElseThrow(() -> new RecordsEmployeeNotFoundException("Employee not found"));
         int i = streams.indexOf(existing);
         streams.set(i, stream);
     }

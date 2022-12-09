@@ -1,5 +1,7 @@
 package api.demo.records.controller;
 
+import api.demo.records.exception.RecordsFieldValueIsNullException;
+import api.demo.records.exception.RecordsFieldValueMissingException;
 import api.demo.records.model.Employee;
 import api.demo.records.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -37,7 +39,7 @@ public class EmployeeControllerTest {
     void createNewEmployeeWithMissingEmail() {
 
         Throwable exception = assertThrows(
-                IllegalArgumentException.class, () -> {
+                RecordsFieldValueMissingException.class, () -> {
                     controller.create(employeeJohnDoeWithMissingEmail);
                 });
         assertEquals("Field values can not be empty", exception.getMessage());
@@ -46,7 +48,7 @@ public class EmployeeControllerTest {
     @Test
     void createNewEmployeeWithNullEmail() {
         Throwable exception = assertThrows(
-                IllegalArgumentException.class, () -> {
+                RecordsFieldValueIsNullException.class, () -> {
                     controller.create(employeeJohnDoeWithNullEmail);
                 });
         assertEquals("Field values can not be null", exception.getMessage());

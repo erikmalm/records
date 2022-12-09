@@ -32,4 +32,28 @@ public class RecordsExceptionHandler {
         return new ResponseEntity<>(recordsException, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = {RecordsEmailAlreadyExistsException.class})
+    public ResponseEntity<Object> handleRecordsEmailAlreadyExistsException
+            (RecordsEmailAlreadyExistsException recordsEmailAlreadyExistsException) {
+        RecordsException recordsException = new RecordsException(
+                recordsEmailAlreadyExistsException.getMessage(),
+                recordsEmailAlreadyExistsException.getCause(),
+                HttpStatus.BAD_REQUEST
+        );
+
+        return new ResponseEntity<>(recordsException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {RecordsEmployeeNotFoundException.class})
+    public ResponseEntity<Object> handleRecordsEmployeeNotFoundException
+            (RecordsEmployeeNotFoundException recordsEmployeeNotFoundException) {
+        RecordsException recordsException = new RecordsException(
+                recordsEmployeeNotFoundException.getMessage(),
+                recordsEmployeeNotFoundException.getCause(),
+                HttpStatus.NOT_FOUND
+        );
+
+        return new ResponseEntity<>(recordsException, HttpStatus.NOT_FOUND);
+    }
+
 }
