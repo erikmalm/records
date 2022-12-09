@@ -34,7 +34,6 @@ public class EmployeeControllerTest {
     String doe = "Doe";
     String johnDoeEmail = "john@doe.com";
     String janeDoeEmail = "jane@doe.com";
-    String nullString = null;
     String empty = "";
 
 
@@ -44,10 +43,11 @@ public class EmployeeControllerTest {
     Employee employeeJohnDoeWithCorrectDetails = new Employee(john, doe, johnDoeEmail);
     Employee employeeJohnDoeWithMissingEmail = new Employee(john, doe, empty);
 
-    Employee employeeJohnDoeWithNullEmail = new Employee(john, doe, nullString);
+    Employee employeeJohnDoeWithNullEmail = new Employee(john, doe, null);
 
     @Test
     void createNewEmployee() {
+        //Act and assert
         assertNotNull(employeeController
                         .create(employeeJohnDoeWithCorrectDetails),
                 "Something went wrong, employee not created properly");
@@ -55,6 +55,7 @@ public class EmployeeControllerTest {
 
     @Test
     void createNewEmployeeWithMissingEmail() {
+        //Act and assert
         Throwable exception = assertThrows(
                 RecordsFieldValueMissingException.class, () -> {
                     employeeController.create(employeeJohnDoeWithMissingEmail);
@@ -64,6 +65,7 @@ public class EmployeeControllerTest {
 
     @Test
     void createNewEmployeeWithNullEmail() {
+        //Act and assert
         Throwable exception = assertThrows(
                 RecordsFieldValueMissingException.class, () -> {
                     employeeController.create(employeeJohnDoeWithNullEmail);
@@ -114,6 +116,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void testDeleteEmployeeNotFound() {
+        //Act and assert
         Throwable exception = assertThrows(
                 RecordsEmployeeNotFoundException.class, () -> {
                     employeeController.delete(johnDoeEmail);

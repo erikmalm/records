@@ -1,58 +1,56 @@
 import React, {useState, useEffect, useCallback} from "react";
 import EmployeesView from "../views/employeesView";
 import axios from "axios";
-import EmployeeList from "./employeeList";
+import EmployeeListPresenter from "./employeeListPresenter";
+import EmployeeAddFormPresenter from "./employeeAddFormPresenter";
 
 export default function EmployeesPresenter() {
 
         const [employees, setEmployees] = useState([]);
+        const [isLoading, setIsLoading] = useState(false);
+        const [error, setError] = useState(null);
 
-        const [firstNameState, setFirstName] = useState([]);
+        const [newEmployee, setNewEmployee] = useState({
+          firstName: "",
+          lastName: "",
+          email: ""
+        });
 
-        const [lastNameState, setLastName] = useState([]);
+        function handleInputChange(e) {
+          const { value, id } = e.target;
 
-        const [emailState, setEmail] = useState([]);
-
-
-
-        const inputFirstName = (name) => {
-          console.log(name)
-          setFirstName(name);
-        }
-
-        const inputLastName = (name) => {
-          console.log(name)
-          setLastName(name);
-        }
-
-        const inputEmail = (address) => {
-          console.log(address)
-          setEmail(address);
-        }
-
+            // Update the newEmployee state using the setNewEmployee function
+          setNewEmployee({
+            ...newEmployee, // spread the current newEmployee state object
+            [id]: value // update the property with the corresponding id with the new value
+          });
+          console.log(newEmployee);
+        };       
 
         const fetchEmployees = async () => {
-          try {
+
+          setIsLoading(true)
+          try {            
             const response = await axios.get("http://localhost:8080/api");
             console.log(response);
             setEmployees(response.data);
+            setIsLoading(false);
           } catch (error) {
             console.error(error);
+            setIsLoading(false);
+            setError(true);
           }
         }
         
-
         const deleteEmployee = (email) => {
           axios.delete(`http://localhost:8080/api/${email}`)
           .then(res => {
             console.log(res);         
           })
-          .then(fetchEmployees())
+          .then(fetchEmployees)
         };
 
-        const addEmployee = () => {
-
-          console.log(firstNameState);
+        function addEmployee() {
 
           var config = {
             headers: {
@@ -63,19 +61,19 @@ export default function EmployeesPresenter() {
 
           axios.post(`http://localhost:8080/api`,
           {
-            firstName: firstNameState,
-            lastName: lastNameState,
-            email: emailState
+            firstName: newEmployee.firstName,
+            lastName: newEmployee.lastName,
+            email: newEmployee.email
           },
           config
           )
-          .then(inputFirstName(""))
-          .then(inputLastName(""))
-          .then(inputEmail(""))
           .then(res => {
-            console.log(res);         
+            console.log(res);     
+            setNewEmployee({         firstName: "",
+            lastName: "",
+            email: ""});
           })
-          .then(fetchEmployees())
+          .then(fetchEmployees)
           .catch(err => {
             console.log(err)
           })
@@ -86,20 +84,19 @@ export default function EmployeesPresenter() {
         }, []);
 
         return (
-          <div>
-          <EmployeesView 
-            employees={employees}    
-            deleteEmployee={email => deleteEmployee(email)}
-            addEmployee={() => addEmployee()}
-            firstName={firstNameState}
-            setFirstName={name => inputFirstName(name)}
-            lastName={lastNameState}
-            setLastName={name => inputLastName(name)}
-            email={emailState}
-            setEmail={address => inputEmail(address)}
-          />
+          <div className="mainContainer">
+            <EmployeeAddFormPresenter             
+            newEmployee={newEmployee}
+            sendInputToNewEmployee={e=>handleInputChange(e)}
+            sendActionAddEmployee={() => addEmployee()}
+            />       
 
-          <EmployeeList title="Employees" />
+          <EmployeeListPresenter 
+          employees={employees}
+          isLoading={isLoading}
+          error={error}
+          handleDeleteEmployee={email => deleteEmployee(email)}
+          title="Employees" />
           </div>
         )  
 

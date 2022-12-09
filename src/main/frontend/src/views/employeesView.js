@@ -33,31 +33,6 @@ export default function EmployeesView({
                 {createEmployeeForm}
                 <input type="button" value="Add employee" onClick={() => addEmployee()} />
             </div>
-
-            <div>
-                <h2>List of all employees</h2>
-
-                <div className="employeeListContainer">
-                    <div className="row header">
-                        <div className="col" >First name</div>
-                            <div className="col" >Last name</div>
-                            <div className="col" >Email address</div>  
-                            <div className="col" ></div>  
-                    </div>
-                    {employees.map(employee => (
-                    <div className="row" key={employee.email}>
-
-                            <div className="col" >{employee.firstName}</div>
-                            <div className="col" >{employee.lastName}</div>
-                            <div className="col" >{employee.email}</div>  
-                            <div className="col" ><CrossIcon color="red" width="16" onClick={() => deleteEmployee(employee.email)} /></div>  
-
-                    </div>
-                ))} 
-                </div>                
-            <div>
         </div>
-    </div>
-</div>
-)          
+    )          
 }

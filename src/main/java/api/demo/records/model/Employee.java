@@ -2,6 +2,7 @@ package api.demo.records.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.UniqueElements;
 
 /**
  * Record of an employee. Contains all the reuired details
@@ -19,6 +20,7 @@ public record Employee(
         String lastName,
         @NotEmpty
         @Email
+        @UniqueElements
         String email) {
 
 }
