@@ -1,5 +1,6 @@
 package api.demo.records.service;
 
+import api.demo.records.exception.RecordsEmployeeNotFoundException;
 import api.demo.records.exception.RecordsFieldValueMissingException;
 import api.demo.records.model.Employee;
 import api.demo.records.repository.EmployeeRepository;
@@ -92,9 +93,11 @@ public class EmployeeService {
      */
     public void removeEmployee(String email) {
         Employee employee = employeeRepository.findByEmail(email);
-        if (employee != null) {
-            employeeRepository.delete(employee.email());
+
+        if (employee == null) {
+            throw new RecordsEmployeeNotFoundException("Employee not found");
         }
+        employeeRepository.delete(employee.email());
     }
 
 

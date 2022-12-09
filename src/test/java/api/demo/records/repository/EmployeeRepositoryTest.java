@@ -4,14 +4,23 @@ import api.demo.records.exception.RecordsEmailAlreadyExistsException;
 import api.demo.records.exception.RecordsFieldValueIsNullException;
 import api.demo.records.exception.RecordsFieldValueMissingException;
 import api.demo.records.model.Employee;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeRepositoryTest {
 
 
-     EmployeeRepository repository = new EmployeeRepository();
+     EmployeeRepository employeeRepository;
+
+     @BeforeEach
+    public void setup() {
+         this.employeeRepository = new EmployeeRepository();
+     }
 
 
     String john = "John";
@@ -20,6 +29,7 @@ public class EmployeeRepositoryTest {
     String jane = "Jane";
     String empty = "";
     String johnDoeEmail = "john@doe.com";
+    String janeDoeEmail = "jane@doe.com";
 
     String nullString = null;
 
@@ -27,7 +37,7 @@ public class EmployeeRepositoryTest {
     void testEmailIsEmpty() {
         Throwable exception = assertThrows(
                 RecordsFieldValueMissingException.class, () -> {
-                    repository.create(new Employee(john, doe, empty));
+                    employeeRepository.create(new Employee(john, doe, empty));
                 });
         assertEquals("Field values can not be empty", exception.getMessage());
     }
@@ -36,7 +46,7 @@ public class EmployeeRepositoryTest {
     void testEmailIsNull() {
         Throwable exception = assertThrows(
                 RecordsFieldValueIsNullException.class, () -> {
-                    repository.create(new Employee(john, doe, nullString));
+                    employeeRepository.create(new Employee(john, doe, nullString));
                 });
         assertEquals("Field values can not be null", exception.getMessage());
     }
@@ -44,14 +54,31 @@ public class EmployeeRepositoryTest {
     @Test
     void testDuplicateEmail() {
 
-        repository.create(new Employee(john, doe, johnDoeEmail));
+        employeeRepository.create(new Employee(john, doe, johnDoeEmail));
 
         Throwable exception = assertThrows(
                 RecordsEmailAlreadyExistsException.class, () -> {
-                    repository.create(new Employee(jane, doe, johnDoeEmail));
+                    employeeRepository.create(new Employee(jane, doe, johnDoeEmail));
                 });
         assertEquals("Email already exists in memory", exception.getMessage());
 
+    }
+
+    @Test
+    public void testFindAll() {
+        //Arrange
+        List<Employee> expectedEmployees = Arrays.asList(
+                new Employee(jane,doe,janeDoeEmail),
+                new Employee(john,doe,johnDoeEmail)
+        );
+
+        for (Employee e : expectedEmployees) employeeRepository.create(e);
+
+        //Act
+        List<Employee> actualEmployees = employeeRepository.findAll();
+
+        //Assert
+        assertEquals(expectedEmployees, actualEmployees);
     }
 
 }
