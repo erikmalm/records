@@ -1,17 +1,10 @@
 package api.demo.records.controller;
 
 import api.demo.records.model.Employee;
-import api.demo.records.repository.EmployeeRepository;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import api.demo.records.service.EmployeeService;
 import org.springframework.http.HttpStatus;
-<<<<<<< Updated upstream
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-=======
-import org.springframework.validation.annotation.Validated;
->>>>>>> Stashed changes
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 
 import java.util.List;
 
@@ -24,72 +17,57 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 public class EmployeeController {
 
-    private final EmployeeRepository repository;
+    private final EmployeeService service;
 
-
-    /**
-     * Creates a new instance of the controller with the repository, containing the employee records
-     * currently stored in memory. This is implicitly autowired, since it is no longer necessary to
-     * specify the @Autowired annotation for constructor based dependency injection.
-     * @param repository the repository for local memory
-     */
-
-    public EmployeeController(EmployeeRepository repository) {
-        this.repository = repository;
+    public EmployeeController(EmployeeService service) {
+        this.service = service;
     }
 
     /**
-     * Find all employees currently stored in memory
-     * GET -> http://localhost:8080/api/
-     * @return all employees in memory
+     * Returns a list of all employees.
+     *
+     * @return a list of all employees
      */
 
     @GetMapping
     public List<Employee> findAll() {
-        return repository.findAll();
+        return service.getAllEmployees();
     }
 
     /**
-     * Find employee by email.
-     * GET -> http://localhost:8080/api/{email}
-     * @param email of the queried employee
-     * @return the employee with the applied email
+     * Returns the employee with the specified email address.
+     *
+     * @param email the email address of the employee to retrieve
+     * @return the employee with the specified email address
      */
 
     @GetMapping("/{email}")
     public Employee findByEmail(@PathVariable String email) {
-        return repository.findByEmail(email);
+        return service.findEmployeeByEmail(email);
     }
 
     /**
-     * Create a new employee and store on local memory.
-     * Also returns HTTP 200 if successfully created.
-     * POST -> http://localhost:8080/api/{}
-     * @param stream employee details to store
-     * @return the updated repository.
+     * Creates a new employee.
+     *
+     * @param employee the employee to create
+     * @return the created employee
      */
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Employee create(@RequestBody Employee stream) {
-
-        Employee addedEmployee = repository.create(stream);
-        if (addedEmployee != null) {
-            //template.convertAndSend("/topic/new-employee", addedEmployee); // broadcast the "new-employee" event to all connected clients
-        }
-        return addedEmployee;
+        return service.addEmployee(stream.firstName(), stream.lastName(),stream.email());
     }
 
     /**
-     * Deletes the employee with the applied e-mail
-     * Also returns HTTP 200 if successfully deleted.
-     * DELETE -> http://localhost:8080/api/{email}
-     * @param email the email of the employee record to delete
+     * Deletes the employee with the specified email address.
+     *
+     * @param email the email address of the employee to delete
      */
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{email}")
     public void delete(@PathVariable String email) {
-        repository.delete(email);
+        service.removeEmployee(email);
     }
 }

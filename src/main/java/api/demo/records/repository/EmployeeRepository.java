@@ -36,7 +36,7 @@ public class EmployeeRepository {
      */
 
     public Employee create(Employee stream)
-            throws RuntimeException {
+            throws RecordsException {
 
         if (anyEmployeeValueIsNull(stream)) {
             throw new RecordsFieldValueIsNullException("Field values can not be null");
