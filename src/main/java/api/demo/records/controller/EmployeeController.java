@@ -3,7 +3,9 @@ package api.demo.records.controller;
 import api.demo.records.model.Employee;
 import api.demo.records.repository.EmployeeRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeRepository repository;
+
 
     /**
      * Creates a new instance of the controller with the repository, containing the employee records
@@ -65,7 +68,12 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Employee create(@RequestBody Employee stream) {
-            return repository.create(stream);
+
+        Employee addedEmployee = repository.create(stream);
+        if (addedEmployee != null) {
+            //template.convertAndSend("/topic/new-employee", addedEmployee); // broadcast the "new-employee" event to all connected clients
+        }
+        return addedEmployee;
     }
 
     /**

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from "react";
 import EmployeesView from "../views/employeesView";
 import axios from "axios";
+import EmployeeList from "./employeeList";
 
 export default function EmployeesPresenter() {
 
@@ -28,14 +29,18 @@ export default function EmployeesPresenter() {
           console.log(address)
           setEmail(address);
         }
-      
-        const fetchEmployees = () => {
-          axios.get("http://localhost:8080/api")
-          .then(res => {
-            console.log(res);
-            setEmployees(res.data);    
-          });
+
+
+        const fetchEmployees = async () => {
+          try {
+            const response = await axios.get("http://localhost:8080/api");
+            console.log(response);
+            setEmployees(response.data);
+          } catch (error) {
+            console.error(error);
+          }
         }
+        
 
         const deleteEmployee = (email) => {
           axios.delete(`http://localhost:8080/api/${email}`)
@@ -81,6 +86,7 @@ export default function EmployeesPresenter() {
         }, []);
 
         return (
+          <div>
           <EmployeesView 
             employees={employees}    
             deleteEmployee={email => deleteEmployee(email)}
@@ -92,6 +98,9 @@ export default function EmployeesPresenter() {
             email={emailState}
             setEmail={address => inputEmail(address)}
           />
+
+          <EmployeeList title="Employees" />
+          </div>
         )  
 
 
