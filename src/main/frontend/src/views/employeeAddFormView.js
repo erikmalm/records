@@ -1,51 +1,54 @@
-import '../styles/employees.css'
+import "../styles/styles.css";
+import { AddEmployeeIcon } from "../icons";
 
 export default function EmployeeAddFormView({
-    newEmployee,
-    inputChange,
-    addEmployee}) {
+  newEmployee,
+  inputChange,
+  addEmployee,
+}) {
+  return (
+    <div className="addEmployeeContainer">
+      <h2>Add employee</h2>
+      <div>
+        <form className="formContainer">
+          <label>
+            <div className="text">First name</div>
+            <input
+              className="item"
+              type={"text"}
+              value={newEmployee.firstName}
+              onInput={(e) => inputChange(e)}
+              id="firstName"
+            />
+          </label>
 
-    return (
-        <div className="addEmployeeContainer">
-            <h2>Add employee</h2>
-        <div className="formContainer">
-            <div className="row header">
-                <div className="col">First name</div>
-                <div className="col">Last name</div>
-                <div className="col">Email address</div>
-            </div>
-            <form>
-                <div className="row">
-                    <div className="col">
-                        <input 
-                        type={"text"}
-                        value={newEmployee.firstName}
-                        onInput={e => inputChange(e)}
-                        id="firstName"/>
-                    </div>
+          <label>
+            <div className="text">Last name</div>
+            <input
+              className="item"
+              type={"text"}
+              value={newEmployee.lastName}
+              onInput={(e) => inputChange(e)}
+              id="lastName"
+            />
+          </label>
 
-                    <div className="col">
-                        <input
-                            type={"text"}
-                            value={newEmployee.lastName}
-                            onInput={e => inputChange(e)}
-                            id="lastName"/>
-                    </div>
+          <label>
+            <div className="text">Email address</div>
+            <input
+              className="item"
+              type={"text"}
+              value={newEmployee.email}
+              onInput={(e) => inputChange(e)}
+              id="email"
+            />
+          </label>
+        </form>
+      </div>
 
-                    <div className="col">
-                        <input
-                            type={"text"}
-                            value={newEmployee.email}
-                            onInput={e => inputChange(e)}
-                            id="email"/>
-                    </div>
-                    
-                </div>
-                
-            </form>
-
-        </div>
-        <input type="button" value="Add employee" onClick={() => addEmployee()} />
-        </div>
-    )
+      <button type="button" value="Add" onClick={() => addEmployee()}>
+        <AddEmployeeIcon size="24" /> Add employee
+      </button>
+    </div>
+  );
 }

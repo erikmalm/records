@@ -56,7 +56,7 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Employee create(@RequestBody Employee stream) {
-        return service.addEmployee(stream.firstName(), stream.lastName(),stream.email());
+            return service.addEmployee(stream.firstName(), stream.lastName(), stream.email());
     }
 
     /**

@@ -1,27 +1,64 @@
-import React from 'react';
-import { CrossIcon } from '../icons';
+import React from "react";
+import { CrossIcon } from "../icons";
+import "../styles/styles.css";
 
-export default function EmployeeListView ({ employees, deleteClicked })
+const EmployeeRow = ({ firstName, lastName, email, deleteClicked }) => (
+  <div className="row">
+    <div className="col">{firstName}</div>
+    <div className="col">{lastName}</div>
+    <div className="col">{email}</div>
+    <div className="col">
+      <CrossIcon color="red" width="16" onClick={() => deleteClicked(email)} />
+    </div>
+  </div>
+);
 
-{
-
-    return (
-        <div className="employeesViewContainer">
-            <h2>List employees</h2>
+const EmployeeList = ({ employees, deleteClicked, error }) => {
+  return (
+    <div>
+      {error ? (
+        <div className="errorMessage">
+          {error.response.data.localizedMessage}
+        </div>
+      ) : (
+        ""
+      )}
+      <h2>List employees</h2>
+      <div className="listEmployeeContainer">
+        <div className="row">
+          <div className="col">
+            <h3>First name</h3>
+          </div>
+          <div className="col">
+            <h3>Last name</h3>
+          </div>
+          <div className="col">
+            <h3>Email</h3>
+          </div>
+          <div className="col">
+            <h3>Remove</h3>
+          </div>
+        </div>
         {employees.length > 0 ? (
-          employees.map(employee => (
-            <div key={employee.email} className="row">
-              <div className="col">{employee.firstName}</div>
-              <div className="col">{employee.lastName}</div>
-              <div className="col">{employee.email}</div>
-              <div className="col" ><CrossIcon color="red" width="16" onClick={() => deleteClicked(employee.email)} /></div>  
-            </div>
+          employees.map((employee) => (
+            <EmployeeRow
+              key={employee.email}
+              firstName={employee.firstName}
+              lastName={employee.lastName}
+              email={employee.email}
+              deleteClicked={deleteClicked}
+            />
           ))
         ) : (
-          <p>No employees found</p>
+          <div className="row">
+            <div className="col">
+              <p>No employees found</p>
+            </div>
+          </div>
         )}
       </div>
-    );
+    </div>
+  );
+};
 
-}
-
+export default EmployeeList;

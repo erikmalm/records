@@ -1,13 +1,18 @@
-import EmployeeAddFormView from "../views/employeeAddFormView"
+import EmployeeAddFormView from "../views/employeeAddFormView";
+import "../styles/styles.css";
 
-export default function employeeAddFormPresenter({newEmployee,sendInputToNewEmployee,sendActionAddEmployee}) {
-
-
-    return (
-        <EmployeeAddFormView 
+export default function employeeAddFormPresenter({
+  newEmployee,
+  sendInputToNewEmployee,
+  sendActionAddEmployee,
+}) {
+  return (
+    <div className="topContainer">
+      <EmployeeAddFormView
         newEmployee={newEmployee}
-        inputChange={e=> sendInputToNewEmployee(e)}
-        addEmployee={sendActionAddEmployee}/>
-    )
-
+        inputChange={(e) => sendInputToNewEmployee(e)}
+        addEmployee={sendActionAddEmployee}
+      />
+    </div>
+  );
 }
