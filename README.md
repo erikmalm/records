@@ -101,5 +101,7 @@ The project also includes a React frontend for interacting with the API. To run 
 npm install
 npm start
 ```
+The frontend provides a simple interface for adding and viewing employees. It communicates with the backend using the endpoints described above.
+
 The frontend will be available at http://localhost:3000.
 
