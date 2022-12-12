@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 public record Employee(
 
         // These annotations have no practical use atm since exceptions are handled manually.
-        // However, they are kept for clarity in the code and kept for possible future implementation.
+        // However, they are kept for clarity to the code and kept for possible future implementation.
 
         @NotEmpty
         String firstName,
