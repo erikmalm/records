@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * This is the application's only controller. All calls to the model pass through this class.
+ * Controller class for handling HTTP requests related to Employee records.
+ * Uses EmployeeServiceImplementation to perform business logic operations.
  */
 
 @RestController
@@ -19,40 +20,42 @@ public class EmployeeController {
 
     private final EmployeeServiceImplementation service;
 
+    /**
+     * Constructor for injecting an instance of EmployeeServiceImplementation.
+     *
+     * @param service  an instance of EmployeeServiceImplementation
+     */
     public EmployeeController(EmployeeServiceImplementation service) {
         this.service = service;
     }
 
     /**
-     * Returns a list of all employees.
+     * Returns a list of all Employee records.
      *
-     * @return a list of all employees
+     * @return a List of Employee objects
      */
-
     @GetMapping
     public List<Employee> findAll() {
         return service.getAllEmployees();
     }
 
     /**
-     * Returns the employee with the specified email address.
+     * Returns the Employee record with the given email address.
      *
-     * @param email the email address of the employee to retrieve
-     * @return the employee with the specified email address
+     * @param email the email address of the Employee to retrieve
+     * @return the Employee with the given email address, or null if no such Employee exists
      */
-
     @GetMapping("/{email}")
     public Employee findByEmail(@PathVariable String email) {
         return service.findEmployeeByEmail(email);
     }
 
     /**
-     * Creates a new employee.
+     * Creates a new Employee record.
      *
-     * @param employee the employee to create
-     * @return the created employee
+     * @param stream the Employee object to create
+     * @return the newly-created Employee
      */
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Employee create(@RequestBody Employee stream) {
@@ -64,7 +67,6 @@ public class EmployeeController {
      *
      * @param email the email address of the employee to delete
      */
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{email}")
     public void delete(@PathVariable String email) {
