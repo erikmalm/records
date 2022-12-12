@@ -91,7 +91,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     /**
      * Removes an employee from the employee repository.
-     * 
+     *
      * @param email The email of the employee to be removed.
      * @throws RecordsEmployeeNotFoundException If the employee with the given email is not found in the repository.
      */
