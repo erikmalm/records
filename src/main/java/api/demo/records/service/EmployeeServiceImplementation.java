@@ -9,15 +9,36 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of the EmployeeService interface.
+ * Provides methods for managing employee records.
+ */
+
 @Service
 public class EmployeeServiceImplementation implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    /**
+     * Constructs a new EmployeeServiceImplementation instance.
+     *
+     * @param employeeRepository the EmployeeRepository instance to use for interacting with the repository layer
+     */
+
     @Autowired
     public EmployeeServiceImplementation(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
+
+    /**
+     * Adds a new employee with the specified first name, last name, and email.
+     *
+     * @param firstName the first name of the employee
+     * @param lastName  the last name of the employee
+     * @param email     the email of the employee
+     * @return the saved Employee entity
+     * @throws RecordsFieldValueMissingException if any of the required input data is missing or invalid
+     */
 
     @Override
     public Employee addEmployee(String firstName, String lastName, String email) throws RecordsFieldValueMissingException {
@@ -39,11 +60,25 @@ public class EmployeeServiceImplementation implements EmployeeService {
         return employeeRepository.create(employee);
     }
 
+    /**
+     * Retrieves all employees from the database.
+     *
+     * @return a list of Employee objects
+     */
+
     @Override
     public List<Employee> getAllEmployees() {
         // retrieve all employees from the database
         return employeeRepository.findAll();
     }
+
+    /**
+     * Retrieves the Employee object associated with the given email address.
+     * If the input is invalid (null or an empty string), returns null.
+     *
+     * @param email the email address of the Employee to retrieve
+     * @return the Employee object associated with the given email address, or null if the input is invalid
+     */
 
     @Override
     public Employee findEmployeeByEmail(String email) {
@@ -53,6 +88,13 @@ public class EmployeeServiceImplementation implements EmployeeService {
         }
         return employeeRepository.findByEmail(email);
     }
+
+    /**
+     * Removes an employee from the employee repository.
+     * 
+     * @param email The email of the employee to be removed.
+     * @throws RecordsEmployeeNotFoundException If the employee with the given email is not found in the repository.
+     */
 
     @Override
     public void removeEmployee(String email) {
