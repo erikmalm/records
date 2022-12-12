@@ -1,7 +1,7 @@
 package api.demo.records.controller;
 
 import api.demo.records.model.Employee;
-import api.demo.records.service.EmployeeService;
+import api.demo.records.service.EmployeeServiceImplementation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +17,9 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 public class EmployeeController {
 
-    private final EmployeeService service;
+    private final EmployeeServiceImplementation service;
 
-    public EmployeeController(EmployeeService service) {
+    public EmployeeController(EmployeeServiceImplementation service) {
         this.service = service;
     }
 

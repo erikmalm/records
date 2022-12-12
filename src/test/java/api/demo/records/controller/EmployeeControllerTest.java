@@ -4,7 +4,7 @@ import api.demo.records.exception.RecordsEmployeeNotFoundException;
 import api.demo.records.exception.RecordsFieldValueMissingException;
 import api.demo.records.model.Employee;
 import api.demo.records.repository.EmployeeRepository;
-import api.demo.records.service.EmployeeService;
+import api.demo.records.service.EmployeeServiceImplementation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmployeeControllerTest {
 
-    private EmployeeService employeeService;
+    private EmployeeServiceImplementation employeeServiceImplementation;
     private EmployeeController employeeController;
 
     @BeforeEach
     public void setUp() {
-        employeeService = new EmployeeService(new EmployeeRepository());
-        employeeController = new EmployeeController(employeeService);
+        employeeServiceImplementation = new EmployeeServiceImplementation(new EmployeeRepository());
+        employeeController = new EmployeeController(employeeServiceImplementation);
     }
 
     // Variables used in testing
@@ -81,7 +81,7 @@ public class EmployeeControllerTest {
                 new Employee("John","Doe","john.doe@example.com"),
                 new Employee("Jane","Doe","jane.doe@example.com")
         );
-        for (Employee e : expectedEmployees) employeeService.addEmployee(e.firstName(),e.lastName(),e.email());
+        for (Employee e : expectedEmployees) employeeServiceImplementation.addEmployee(e.firstName(),e.lastName(),e.email());
 
         //Act
         List<Employee> actualEmployees = employeeController.findAll();
@@ -93,7 +93,7 @@ public class EmployeeControllerTest {
     @Test
     public void testFindEmployeeByEmail() {
         //Arrange
-        employeeService.addEmployee(john, doe, johnDoeEmail);
+        employeeServiceImplementation.addEmployee(john, doe, johnDoeEmail);
 
         //Act
         Employee actualEmployee = employeeController.findByEmail(johnDoeEmail);
@@ -105,13 +105,13 @@ public class EmployeeControllerTest {
     @Test
     public void testDeleteEmployee() {
         //Arrange
-        employeeService.addEmployee(john, doe, johnDoeEmail);
+        employeeServiceImplementation.addEmployee(john, doe, johnDoeEmail);
 
         //Act
         employeeController.delete(johnDoeEmail);
 
         //Assert
-        assertEquals(0, employeeService.getAllEmployees().size());
+        assertEquals(0, employeeServiceImplementation.getAllEmployees().size());
     }
 
     @Test
